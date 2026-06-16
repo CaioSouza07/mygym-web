@@ -17,17 +17,23 @@ function RegisterPage() {
         />
         <Card>
           <TitleForm>Cadastrar</TitleForm>
+
           <LabelForm htmlFor="nome">Nome</LabelForm>
           <InputForm placeholder="Digite seu nome" />
+
           <LabelForm htmlFor="email">E-mail</LabelForm>
           <InputForm placeholder="Digite seu e-mail" />
+
           <LabelForm htmlFor="senha">Senha</LabelForm>
           <InputForm placeholder="Digite sua senha" />
+
           <LabelForm htmlFor="confirmacaoSenha">Confirmação de Senha</LabelForm>
           <InputForm placeholder="Confirme a senha" />
+
           <div className="px-8 py-4 w-full">
             <Button className="text-xl">Cadastro</Button>
           </div>
+
           <div className="p-2 w-full flex items-center justify-center gap-2">
             <p className="text-[#858385]">Já possuí uma conta?</p>
             <Link
