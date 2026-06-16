@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import logo from "../assets/mygym_logo.png";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
@@ -25,7 +26,13 @@ function LoginPage() {
           </div>
           <div className="p-2 w-full flex items-center justify-center gap-2">
             <p className="text-[#858385]">Não tem conta?</p>
-            <p className="text-[#FFCC00]">Cadastra-se</p>
+
+            <Link
+              to="/auth/register"
+              className="text-[#FFCC00] font-medium hover:underline"
+            >
+              Cadastre-se
+            </Link>
           </div>
         </Card>
       </div>
