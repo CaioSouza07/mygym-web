@@ -12,7 +12,7 @@ function RegisterPage() {
         <img
           src={logo}
           alt="MyGym Logo"
-          className="w-30 sm:w-38 md:w-70 lg:w-78"
+          className="w-46 sm:w-38 md:w-70 lg:w-78"
         />
         <Card>
           <TitleForm>Cadastrar</TitleForm>
@@ -25,7 +25,11 @@ function RegisterPage() {
           <LabelForm htmlFor="confirmacaoSenha">Confirmação de Senha</LabelForm>
           <InputForm placeholder="Confirme a senha" />
           <div className="px-8 py-4 w-full">
-            <Button>Cadastro</Button>
+            <Button className="text-xl">Cadastro</Button>
+          </div>
+          <div className="p-2 w-full flex items-center justify-center gap-2">
+            <p className="text-[#858385]">Já possuí uma conta?</p>
+            <p className="text-[#FFCC00]">Cadastra-se</p>
           </div>
         </Card>
       </div>

@@ -7,7 +7,7 @@ function GetStartedPage() {
       <img
         src={logo}
         alt="MyGym Logo"
-        className="w-48 sm:w-56 md:w-72 lg:w-96"
+        className="w-60 sm:w-56 md:w-72 lg:w-96"
       />
       <div className="mt-12 w-full max-w-sm">
         <Button variant="primary">Get Started</Button>
