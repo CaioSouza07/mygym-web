@@ -17,10 +17,17 @@ function LoginPage() {
         />
         <Card>
           <TitleForm>Entrar</TitleForm>
-          <LabelForm htmlFor="email">E-mail</LabelForm>
-          <InputForm placeholder="Digite seu e-mail" />
-          <LabelForm htmlFor="senha">Senha</LabelForm>
-          <InputForm placeholder="Digite sua senha" />
+
+          <div className="flex flex-col w-full gap-1">
+            <LabelForm htmlFor="email">E-mail</LabelForm>
+            <InputForm placeholder="Digite seu e-mail" />
+          </div>
+
+          <div className="flex flex-col w-full gap-1">
+            <LabelForm htmlFor="senha">Senha</LabelForm>
+            <InputForm placeholder="Digite sua senha" />
+          </div>
+
           <div className="px-8 py-4 w-full">
             <Button className="text-xl">Entrar</Button>
           </div>

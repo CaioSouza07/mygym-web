@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const signup = async (name, email, password) => {
+  const register = async (name, email, password) => {
     setLoading(true);
     try {
       const res = await api.post("/auth/register", { name, email, password });
@@ -59,7 +59,7 @@ export function AuthProvider({ children }) {
         user,
         loading,
         login,
-        signup,
+        register,
         logout,
         isAuthenticated: !!user,
       }}
