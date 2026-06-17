@@ -8,11 +8,16 @@ import TitleForm from "../components/ui/TitleForm";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
 import ErrorCard from "../components/ui/ErrorCard";
+import Spinner from "../components/ui/Spinner";
+import ErrorFieldInfo from "../components/ui/ErrorFieldInfo";
 
 function RegisterPage() {
   const navigate = useNavigate();
   const { loading, register } = useAuth();
-  const [error, setError] = useState(true);
+  const [error, setError] = useState({
+    message: null,
+    details: null,
+  });
 
   const [values, setValues] = useState({
     name: "",
@@ -33,16 +38,37 @@ function RegisterPage() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setError(null);
+    setError({
+      message: null,
+      details: null,
+    });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     try {
+      if (values.password !== values.passwordConfirmation) {
+        setError({
+          message: "As senhas não coincidem",
+          details: null,
+        });
+        return;
+      }
+
       await register(values.name, values.email, values.password);
       navigate("/home");
     } catch (err) {
       console.error(err);
-      if (err.status === 400) {
-        setError("E-mail ou senha inválidos");
+      if (err instanceof Error) {
+        setError({
+          message: err.message,
+          details: err.details,
+        });
       } else {
-        setError("Erro inesperado. Tente novamente");
+        setError({
+          message: "Erro inesperado. Tente novamente",
+          details: null,
+        });
       }
     }
   };
@@ -63,9 +89,11 @@ function RegisterPage() {
               <InputForm
                 placeholder="Digite seu nome"
                 id="name"
+                name="name"
                 value={values.name}
                 onChange={handleChange}
               />
+              <ErrorFieldInfo field="name" error={error} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -73,9 +101,11 @@ function RegisterPage() {
               <InputForm
                 placeholder="Digite seu e-mail"
                 id="email"
+                name="email"
                 value={values.email}
                 onChange={handleChange}
               />
+              <ErrorFieldInfo field="email" error={error} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -83,9 +113,12 @@ function RegisterPage() {
               <InputForm
                 placeholder="Digite sua senha"
                 id="password"
+                name="password"
                 value={values.password}
                 onChange={handleChange}
+                type="password"
               />
+              <ErrorFieldInfo field="password" error={error} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -95,13 +128,17 @@ function RegisterPage() {
               <InputForm
                 placeholder="Confirme a senha"
                 id="passwordConfirmation"
+                name="passwordConfirmation"
                 value={values.passwordConfirmation}
                 onChange={handleChange}
+                type="password"
               />
             </div>
 
             <div className="px-8 py-4 w-full">
-              <Button className="text-xl">Cadastro</Button>
+              <Button className="text-xl" type="submit">
+                Cadastro
+              </Button>
             </div>
 
             <div className="p-2 w-full flex items-center justify-center gap-2">
@@ -116,7 +153,12 @@ function RegisterPage() {
           </Card>
         </form>
       </div>
-      {error && <ErrorCard>Erro aqui pai</ErrorCard>}
+      {error.message && (
+        <ErrorCard onClick={() => setError({ message: null, details: null })}>
+          {error.message}
+        </ErrorCard>
+      )}
+      {loading && <Spinner />}
     </div>
   );
 }

@@ -3,6 +3,7 @@ function InputForm({
   className = "",
   placeholder = "",
   id,
+  name,
   autoComplete = "off",
   value,
   onChange,
@@ -18,7 +19,7 @@ function InputForm({
       autoComplete={autoComplete}
       value={value}
       onChange={onChange}
-      name={id}
+      name={name}
     />
   );
 }

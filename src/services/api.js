@@ -1,10 +1,10 @@
-const API_BASE = "http://localhost:8080";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 class ApiError extends Error {
-  constructor(message, status, data) {
+  constructor(message, status, details) {
     super(message);
     this.status = status;
-    this.data = data;
+    this.details = details;
   }
 }
 
@@ -26,7 +26,7 @@ async function request(endpoint, options = {}) {
     throw new ApiError(
       errorData?.message || `Erro HTTP ${res.status}`,
       res.status,
-      errorData,
+      errorData?.details || null,
     );
   }
 
