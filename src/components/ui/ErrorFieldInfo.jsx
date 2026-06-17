@@ -1,13 +1,7 @@
-function ErrorFieldInfo({ field, error }) {
-  const getFieldErrors = () => {
-    if (!error.details) return [];
-    return error.details.filter((e) => e.field === field).map((e) => e.message);
-  };
-  return getFieldErrors().map((msg, index) => (
-    <span key={index} className="text-red-500 text-sm">
-      {msg}
-    </span>
-  ));
+function ErrorFieldInfo({ error }) {
+  if (!error) return null;
+
+  return <span className="text-red-500 text-sm">{error.message}</span>;
 }
 
 export default ErrorFieldInfo;

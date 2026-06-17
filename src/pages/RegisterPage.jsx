@@ -6,10 +6,13 @@ import InputForm from "../components/ui/InputForm";
 import LabelForm from "../components/ui/LabelForm";
 import TitleForm from "../components/ui/TitleForm";
 import { useAuth } from "../hooks/useAuth";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ErrorCard from "../components/ui/ErrorCard";
 import Spinner from "../components/ui/Spinner";
 import ErrorFieldInfo from "../components/ui/ErrorFieldInfo";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -19,59 +22,43 @@ function RegisterPage() {
     details: null,
   });
 
-  const [values, setValues] = useState({
-    name: "",
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleRegister = async (e) => {
-    e.preventDefault();
-    setError({
-      message: null,
-      details: null,
-    });
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  const onSubmit = async (data) => {
+    setError({ message: null, details: null });
     try {
-      if (values.password !== values.passwordConfirmation) {
-        setError({
-          message: "As senhas não coincidem",
-          details: null,
-        });
-        return;
-      }
-
-      await register(values.name, values.email, values.password);
+      await register(data.name, data.email, data.password);
       navigate("/home");
     } catch (err) {
-      console.error(err);
       if (err instanceof Error) {
         setError({
           message: err.message,
           details: err.details,
         });
-      } else {
-        setError({
-          message: "Erro inesperado. Tente novamente",
-          details: null,
-        });
       }
     }
   };
+
+  const registerSchema = z
+    .object({
+      name: z.string().min(1, "Nome é obrigatório"),
+      email: z.string().email("Formato de e-mail inválido"),
+      password: z.string().min(6, "Senha deve ter no mínimo 6 caracteres"),
+      passwordConfirmation: z.string(),
+    })
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: "As senhas não coincidem",
+      path: ["passwordConfirmation"],
+    });
+
+  const {
+    register: registerField,
+    handleSubmit,
+    formState: { errors },
+    // clearErrors,
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
+
+  // const hasFieldErrors = Object.keys(errors).length > 0;
 
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -81,7 +68,11 @@ function RegisterPage() {
           alt="MyGym Logo"
           className="w-46 sm:w-38 md:w-70 lg:w-78"
         />
-        <form className="w-full" autoComplete="nope" onSubmit={handleRegister}>
+        <form
+          className="w-full"
+          autoComplete="nope"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Card>
             <TitleForm>Cadastrar</TitleForm>
             <div className="flex flex-col w-full gap-1">
@@ -89,11 +80,10 @@ function RegisterPage() {
               <InputForm
                 placeholder="Digite seu nome"
                 id="name"
-                name="name"
-                value={values.name}
-                onChange={handleChange}
+                {...registerField("name")}
+                error={!!errors.name}
               />
-              <ErrorFieldInfo field="name" error={error} />
+              <ErrorFieldInfo error={errors.name} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -101,11 +91,10 @@ function RegisterPage() {
               <InputForm
                 placeholder="Digite seu e-mail"
                 id="email"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
+                {...registerField("email")}
+                error={!!errors.email}
               />
-              <ErrorFieldInfo field="email" error={error} />
+              <ErrorFieldInfo error={errors.email} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -113,12 +102,11 @@ function RegisterPage() {
               <InputForm
                 placeholder="Digite sua senha"
                 id="password"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
+                {...registerField("password")}
                 type="password"
+                error={!!errors.password}
               />
-              <ErrorFieldInfo field="password" error={error} />
+              <ErrorFieldInfo error={errors.password} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
@@ -128,10 +116,9 @@ function RegisterPage() {
               <InputForm
                 placeholder="Confirme a senha"
                 id="passwordConfirmation"
-                name="passwordConfirmation"
-                value={values.passwordConfirmation}
-                onChange={handleChange}
+                {...registerField("passwordConfirmation")}
                 type="password"
+                error={!!errors.passwordConfirmation}
               />
             </div>
 
@@ -153,11 +140,17 @@ function RegisterPage() {
           </Card>
         </form>
       </div>
+
       {error.message && (
-        <ErrorCard onClick={() => setError({ message: null, details: null })}>
-          {error.message}
+        <ErrorCard
+          onClick={() => {
+            setError({ message: null, details: null });
+          }}
+        >
+          {error.message || "Erro na validação dos campos"}
         </ErrorCard>
       )}
+
       {loading && <Spinner />}
     </div>
   );
