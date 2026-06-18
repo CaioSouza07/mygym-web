@@ -1,4 +1,4 @@
-function LabelForm({ children, htmlFor, className = "" }) {
+function Label({ children, htmlFor, className = "" }) {
   const baseStyle =
     "flex flex-col flex-1 w-full text-lg font-semibold text-white";
   return (
@@ -8,4 +8,4 @@ function LabelForm({ children, htmlFor, className = "" }) {
   );
 }
 
-export default LabelForm;
+export default Label;

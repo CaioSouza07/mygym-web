@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-const InputForm = forwardRef(
+const Input = forwardRef(
   (
     {
       type = "text",
@@ -29,4 +29,4 @@ const InputForm = forwardRef(
   },
 );
 
-export default InputForm;
+export default Input;

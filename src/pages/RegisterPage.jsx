@@ -2,14 +2,14 @@ import { Link, useNavigate } from "react-router";
 import logo from "../assets/mygym_logo.png";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
-import InputForm from "../components/ui/InputForm";
-import LabelForm from "../components/ui/LabelForm";
-import TitleForm from "../components/ui/TitleForm";
+import Input from "../components/ui/Input";
+import Label from "../components/ui/Label";
+import TitleForm from "../components/TitleForm";
 import { useAuth } from "../hooks/useAuth";
-import { useEffect, useState } from "react";
-import ErrorCard from "../components/ui/ErrorCard";
+import { useState } from "react";
+import ErrorCard from "../components/ErrorCard";
 import Spinner from "../components/ui/Spinner";
-import ErrorFieldInfo from "../components/ui/ErrorFieldInfo";
+import ErrorFieldInfo from "../components/ErrorFieldInfo";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -53,12 +53,9 @@ function RegisterPage() {
     register: registerField,
     handleSubmit,
     formState: { errors },
-    // clearErrors,
   } = useForm({
     resolver: zodResolver(registerSchema),
   });
-
-  // const hasFieldErrors = Object.keys(errors).length > 0;
 
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -76,8 +73,8 @@ function RegisterPage() {
           <Card>
             <TitleForm>Cadastrar</TitleForm>
             <div className="flex flex-col w-full gap-1">
-              <LabelForm htmlFor="name">Nome</LabelForm>
-              <InputForm
+              <Label htmlFor="name">Nome</Label>
+              <Input
                 placeholder="Digite seu nome"
                 id="name"
                 {...registerField("name")}
@@ -87,8 +84,8 @@ function RegisterPage() {
             </div>
 
             <div className="flex flex-col w-full gap-1">
-              <LabelForm htmlFor="email">E-mail</LabelForm>
-              <InputForm
+              <Label htmlFor="email">E-mail</Label>
+              <Input
                 placeholder="Digite seu e-mail"
                 id="email"
                 {...registerField("email")}
@@ -98,8 +95,8 @@ function RegisterPage() {
             </div>
 
             <div className="flex flex-col w-full gap-1">
-              <LabelForm htmlFor="password">Senha</LabelForm>
-              <InputForm
+              <Label htmlFor="password">Senha</Label>
+              <Input
                 placeholder="Digite sua senha"
                 id="password"
                 {...registerField("password")}
@@ -110,16 +107,15 @@ function RegisterPage() {
             </div>
 
             <div className="flex flex-col w-full gap-1">
-              <LabelForm htmlFor="confirmacaoSenha">
-                Confirmação de Senha
-              </LabelForm>
-              <InputForm
+              <Label htmlFor="confirmacaoSenha">Confirmação de Senha</Label>
+              <Input
                 placeholder="Confirme a senha"
                 id="passwordConfirmation"
                 {...registerField("passwordConfirmation")}
                 type="password"
                 error={!!errors.passwordConfirmation}
               />
+              <ErrorFieldInfo error={errors.passwordConfirmation} />
             </div>
 
             <div className="px-8 py-4 w-full">

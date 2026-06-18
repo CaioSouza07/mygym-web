@@ -2,14 +2,17 @@ import { Link, useNavigate } from "react-router";
 import logo from "../assets/mygym_logo.png";
 import Button from "../components/ui/Button";
 import Card from "../components/ui/Card";
-import InputForm from "../components/ui/InputForm";
-import LabelForm from "../components/ui/LabelForm";
-import TitleForm from "../components/ui/TitleForm";
+import Input from "../components/ui/Input";
+import Label from "../components/ui/Label";
+import TitleForm from "../components/TitleForm";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import ErrorCard from "../components/ui/ErrorCard";
+import ErrorCard from "../components/ErrorCard";
 import Spinner from "../components/ui/Spinner";
-import ErrorFieldInfo from "../components/ui/ErrorFieldInfo";
+import ErrorFieldInfo from "../components/ErrorFieldInfo";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -19,49 +22,33 @@ function LoginPage() {
     details: null,
   });
 
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setValues((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError({
-      message: null,
-      details: null,
-    });
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+  const onSubmit = async (data) => {
+    setError({ message: null, details: null });
     try {
-      await login(values.email, values.password);
+      await login(data.email, data.password);
       navigate("/home");
     } catch (err) {
-      console.error(err);
       if (err instanceof Error) {
         setError({
           message: err.message,
           details: err.details,
         });
-      } else {
-        setError({
-          message: "Erro inesperado. Tente novamente",
-          details: null,
-        });
       }
     }
   };
+
+  const loginSchema = z.object({
+    email: z.string().email("Formato de e-mail inválido"),
+    password: z.string().min(1, "Senha é obrigatório"),
+  });
+
+  const {
+    register: loginField,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
   return (
     <div className="flex flex-col items-center min-h-screen">
@@ -71,32 +58,35 @@ function LoginPage() {
           alt="MyGym Logo"
           className="w-46 sm:w-38 md:w-70 lg:w-78"
         />
-        <form className="w-full" autoComplete="nope" onSubmit={handleLogin}>
+        <form
+          className="w-full"
+          autoComplete="nope"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Card>
             <TitleForm>Entrar</TitleForm>
 
             <div className="flex flex-col w-full gap-1">
-              <LabelForm htmlFor="email">E-mail</LabelForm>
-              <InputForm
+              <Label htmlFor="email">E-mail</Label>
+              <Input
                 placeholder="Digite seu e-mail"
                 id="email"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
+                {...loginField("email")}
+                error={!!errors.email}
               />
-              <ErrorFieldInfo field="email" error={error} />
+              <ErrorFieldInfo error={errors.email} />
             </div>
 
             <div className="flex flex-col w-full gap-1">
-              <LabelForm htmlFor="senha">Senha</LabelForm>
-              <InputForm
+              <Label htmlFor="senha">Senha</Label>
+              <Input
                 placeholder="Digite sua senha"
                 id="password"
-                name="password"
-                value={values.password}
-                onChange={handleChange}
+                type="password"
+                {...loginField("password")}
+                error={!!errors.password}
               />
-              <ErrorFieldInfo field="password" error={error} />
+              <ErrorFieldInfo error={errors.password} />
             </div>
 
             <div className="px-8 py-4 w-full">
