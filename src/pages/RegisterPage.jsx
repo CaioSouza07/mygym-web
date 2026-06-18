@@ -27,7 +27,7 @@ function RegisterPage() {
     setError({ message: null, details: null });
     try {
       await register(data.name, data.email, data.password);
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       if (err instanceof Error) {
         window.scrollTo({

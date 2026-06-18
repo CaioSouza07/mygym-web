@@ -27,7 +27,7 @@ function LoginPage() {
     setError({ message: null, details: null });
     try {
       await login(data.email, data.password);
-      navigate("/home");
+      navigate("/");
     } catch (err) {
       if (err instanceof Error) {
         window.scrollTo({
