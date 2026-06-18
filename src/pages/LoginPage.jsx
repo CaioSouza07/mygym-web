@@ -13,6 +13,7 @@ import ErrorFieldInfo from "../components/ErrorFieldInfo";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import InputPassword from "../components/InputPassword";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -29,6 +30,10 @@ function LoginPage() {
       navigate("/home");
     } catch (err) {
       if (err instanceof Error) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
         setError({
           message: err.message,
           details: err.details,
@@ -79,10 +84,9 @@ function LoginPage() {
 
             <div className="flex flex-col w-full gap-1">
               <Label htmlFor="senha">Senha</Label>
-              <Input
+              <InputPassword
                 placeholder="Digite sua senha"
                 id="password"
-                type="password"
                 {...loginField("password")}
                 error={!!errors.password}
               />
