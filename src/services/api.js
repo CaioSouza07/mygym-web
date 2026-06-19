@@ -1,3 +1,5 @@
+import { tokenStorage } from "./tokenStorage";
+
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 class ApiError extends Error {
@@ -8,9 +10,31 @@ class ApiError extends Error {
   }
 }
 
+async function refreshAccessToken() {
+  const res = await fetch(`${API_BASE}/auth/refresh`, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    tokenStorage.clearToken();
+    throw new Error("Refresh token expirado");
+  }
+
+  const data = await res.json();
+
+  tokenStorage.setToken(data.accessToken);
+
+  return data.accessToken;
+}
+
 async function request(endpoint, options = {}) {
-  const token = localStorage.getItem("token");
+  const token = tokenStorage.getToken();
   const config = {
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
       ...(token && { Authorization: `Bearer ${token}` }),
@@ -18,8 +42,45 @@ async function request(endpoint, options = {}) {
     },
     ...options,
   };
+  console.log("TOKEN ATUAL:", token);
 
   const res = await fetch(`${API_BASE}${endpoint}`, config);
+
+  if (res.status === 401 && endpoint !== "/auth/refresh") {
+    try {
+      const newToken = await refreshAccessToken();
+
+      const retryConfig = {
+        ...config,
+        headers: {
+          ...config.headers,
+          Authorization: `Bearer ${newToken}`,
+        },
+      };
+
+      const retryRes = await fetch(`${API_BASE}${endpoint}`, retryConfig);
+
+      if (!retryRes.ok) {
+        const errorData = await retryRes.json().catch(() => null);
+
+        throw new ApiError(
+          errorData?.message || `Erro HTTP ${retryRes.status}`,
+          retryRes.status,
+          errorData?.details || null,
+        );
+      }
+
+      return retryRes.status === 204 ? null : retryRes.json();
+    } catch (error) {
+      tokenStorage.clearToken();
+
+      localStorage.removeItem("user");
+
+      window.location.href = "/auth/login";
+
+      throw error;
+    }
+  }
 
   if (!res.ok) {
     const errorData = await res.json().catch(() => null);
