@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     setLoading(true);
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const res = await api.post("/login", { email, password });
 
       const token = res.token;
       tokenStorage.setToken(token);
@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
   const register = async (name, email, password) => {
     setLoading(true);
     try {
-      const res = await api.post("/auth/register", { name, email, password });
+      const res = await api.post("/register", { name, email, password });
 
       const token = res.token;
       tokenStorage.setToken(token);

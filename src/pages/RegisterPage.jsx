@@ -131,7 +131,7 @@ function RegisterPage() {
             <div className="p-2 w-full flex items-center justify-center gap-2">
               <p className="text-[#858385]">Já possuí uma conta?</p>
               <Link
-                to="/auth/login"
+                to="/login"
                 className="text-[#FFCC00] font-medium hover:underline"
               >
                 Entrar

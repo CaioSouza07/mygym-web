@@ -10,7 +10,8 @@ function Button({
     "rounded-lg p-2 hover:opacity-80 font-medium  w-full cursor-pointer flex justify-center items-center";
   const variants = {
     primary: "bg-[#FFCC00] text-black",
-    secondary: "bg-black border-3 border-[#FFCC00] text-[#FFCC00]",
+    secondary: "bg-black border-2 border-[#FFCC00] text-[#FFCC00]",
+    inverted: "bg-[#FFCC00] text-black border-2 border-black",
     danger: "bg-transparent text-red-500",
   };
 

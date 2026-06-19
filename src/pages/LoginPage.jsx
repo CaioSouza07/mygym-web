@@ -102,7 +102,7 @@ function LoginPage() {
               <p className="text-[#858385]">Não tem conta?</p>
 
               <Link
-                to="/auth/register"
+                to="/register"
                 className="text-[#FFCC00] font-medium hover:underline"
               >
                 Cadastre-se

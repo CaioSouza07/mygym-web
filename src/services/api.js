@@ -75,7 +75,7 @@ async function request(endpoint, options = {}) {
 
       localStorage.removeItem("user");
 
-      window.location.href = "/auth/login";
+      window.location.href = "/login";
 
       throw error;
     }

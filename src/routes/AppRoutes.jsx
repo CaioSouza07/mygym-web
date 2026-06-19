@@ -10,8 +10,8 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/get-started" element={<GetStartedPage />} />
-        <Route path="/auth/register" element={<RegisterPage />} />
-        <Route path="/auth/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route
           path="/"
           element={

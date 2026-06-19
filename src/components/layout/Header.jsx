@@ -23,11 +23,14 @@ function Header() {
 
   const handleLogout = () => {
     logout();
-    navigate("/auth/login");
+    navigate("/login");
   };
   return (
     <header className="flex items-center justify-between border  w-full">
-      <div className="flex items-center gap-2">
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={() => navigate("/")}
+      >
         <img
           src={logo}
           alt="Logo da MyGym"
@@ -40,10 +43,13 @@ function Header() {
         />
       </div>
       <div className="flex items-center text-gray-400 gap-6">
-        <button>
+        <button className="cursor-pointer hover:opacity-70">
           <History className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" />
         </button>
-        <button onClick={handleOpenModalLogout}>
+        <button
+          className="cursor-pointer hover:opacity-70"
+          onClick={handleOpenModalLogout}
+        >
           <LogOut className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" />
         </button>
       </div>
