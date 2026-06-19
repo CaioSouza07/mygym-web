@@ -42,7 +42,6 @@ async function request(endpoint, options = {}) {
     },
     ...options,
   };
-  console.log("TOKEN ATUAL:", token);
 
   const res = await fetch(`${API_BASE}${endpoint}`, config);
 

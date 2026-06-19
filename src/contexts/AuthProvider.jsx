@@ -5,7 +5,6 @@ import { tokenStorage } from "../services/tokenStorage";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
