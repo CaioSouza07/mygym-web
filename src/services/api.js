@@ -20,8 +20,11 @@ async function refreshAccessToken() {
   });
 
   if (!res.ok) {
+    const errorData = await res.json().catch(() => null);
+
     tokenStorage.clearToken();
-    throw new Error("Refresh token expirado");
+
+    throw new Error(errorData?.message || "Falha ao renovar sessão");
   }
 
   const data = await res.json();
@@ -45,7 +48,9 @@ async function request(endpoint, options = {}) {
 
   const res = await fetch(`${API_BASE}${endpoint}`, config);
 
-  if (res.status === 401 && endpoint !== "/auth/refresh") {
+  const publicEndpoints = ["/auth/login", "/auth/register", "/auth/refresh"];
+
+  if (res.status === 401 && !publicEndpoints.includes(endpoint)) {
     try {
       const newToken = await refreshAccessToken();
 
@@ -73,9 +78,7 @@ async function request(endpoint, options = {}) {
     } catch (error) {
       tokenStorage.clearToken();
 
-      localStorage.removeItem("user");
-
-      window.location.href = "/login";
+      // window.location.href = "/login";
 
       throw error;
     }

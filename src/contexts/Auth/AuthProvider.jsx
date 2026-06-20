@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { api } from "../services/api";
-import { tokenStorage } from "../services/tokenStorage";
+import { api } from "../../services/api";
+import { tokenStorage } from "../../services/tokenStorage";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -10,8 +10,8 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function loadSession() {
       try {
-        const refresh = await api.post("/auth/refresh");
-        tokenStorage.setToken(refresh.accessToken);
+        // const refresh = await api.post("/auth/refresh");
+        // tokenStorage.setToken(refresh.accessToken);
 
         const user = await api.get("/users/me");
 
@@ -30,7 +30,7 @@ export function AuthProvider({ children }) {
   const login = useCallback(async (email, password) => {
     setLoading(true);
     try {
-      const res = await api.post("/login", { email, password });
+      const res = await api.post("/auth/login", { email, password });
 
       const token = res.token;
       tokenStorage.setToken(token);
@@ -47,7 +47,7 @@ export function AuthProvider({ children }) {
   const register = async (name, email, password) => {
     setLoading(true);
     try {
-      const res = await api.post("/register", { name, email, password });
+      const res = await api.post("/auth/register", { name, email, password });
 
       const token = res.token;
       tokenStorage.setToken(token);
