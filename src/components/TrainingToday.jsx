@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CirclePlus, ClipboardList } from "lucide-react";
 import dumbbell from "../assets/dumbbell.png";
 import Button from "./ui/Button";
 import Card from "./ui/Card";
@@ -23,12 +23,26 @@ function TrainingToday() {
 
   return !todayTraining ? (
     <Card className="gap-4">
-      <h1 className="text-base font-semibold text-white/40">
-        Nenhum treino para hoje!
-      </h1>
-      <Button variant="secondary" className="max-w-1/2">
-        Criar treino
-      </Button>
+      <div className="flex w-full justify-between gap-4 lg:flex-row">
+        <div className="flex items-center gap-4 text-[#FFCC00] flex-2">
+          <ClipboardList className="w-12 h-12 md:w-8 md:h-8 lg:w-14 lg:h-14 " />
+          <div className="flex w-full items-center justify-center lg:flex-col lg:items-start">
+            <h1 className="text-lg font-semibold text-white/50 lg:text-white">
+              Nenhum treino para hoje!
+            </h1>
+            <span className="text-white/40 wrap-break-word hidden md:inline">
+              Crie um treino personalizável para cumprir com seus objetivos e
+              manter constância!
+            </span>
+          </div>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <Button className="gap-2 max-w-2/3">
+            <CirclePlus className="w-8 h-8" />
+            <p className="hidden md:inline">Criar treino</p>
+          </Button>
+        </div>
+      </div>
     </Card>
   ) : (
     <Card className="relative overflow-hidden rounded-3xl p-6">
@@ -46,7 +60,7 @@ function TrainingToday() {
         </span>
 
         <div>
-          <h1 className="text-white font-bold text-4xl">
+          <h1 className="text-white font-bold text-2xl lg:text-4xl">
             {todayTraining.name}
           </h1>
         </div>
