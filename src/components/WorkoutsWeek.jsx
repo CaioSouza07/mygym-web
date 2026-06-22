@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { useTraining } from "../hooks/useTraining";
 import TrainingCardDay from "./TrainingCardDay";
 import Spinner from "./ui/Spinner";
@@ -55,7 +56,15 @@ function WorkoutsWeek() {
 
   return (
     <div className="flex flex-col w-full gap-2">
-      <span className="text-white font-semibold text-xl">Sua semana</span>
+      <div className="flex flex-1 border items-center justify-between">
+        <span className="text-white font-semibold text-xl">Sua semana</span>
+        <Link
+          className="text-[#FFCC00] font-medium underline hover:opacity-80"
+          to="/workouts"
+        >
+          Ver treinos
+        </Link>
+      </div>
       {workoutsCurrentWeek.map((trainingDay) => (
         <TrainingCardDay key={trainingDay.id} training={trainingDay} />
       ))}

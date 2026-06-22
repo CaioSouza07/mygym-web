@@ -1,30 +1,27 @@
-import { History, LogOut } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
 import logo from "../../assets/mini_logo.png";
 import text from "../../assets/mygym_text.png";
-import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
-import Spinner from "../ui/Spinner";
-import { useState } from "react";
-import ModalConfirmation from "../ModalConfirmation";
+import NavButton from "../ui/NavButton";
 
 function Header() {
-  const { loading, logout } = useAuth();
+  // const { loading, logout } = useAuth();
   const navigate = useNavigate();
 
-  const [openModalLogout, setOpenModalLogout] = useState(false);
+  // const [openModalLogout, setOpenModalLogout] = useState(false);
 
-  const handleCloseModalLogout = () => {
-    setOpenModalLogout(false);
-  };
+  // const handleCloseModalLogout = () => {
+  //   setOpenModalLogout(false);
+  // };
 
-  const handleOpenModalLogout = () => {
-    setOpenModalLogout(true);
-  };
+  // const handleOpenModalLogout = () => {
+  //   setOpenModalLogout(true);
+  // };
 
-  const handleLogout = () => {
-    logout();
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   logout();
+  //   navigate("/login");
+  // };
   return (
     <header className="flex items-center justify-between border  w-full">
       <div
@@ -42,8 +39,17 @@ function Header() {
           className="w-20 sm:w-18 md:w-50 lg:w-28"
         />
       </div>
-      <div className="flex items-center text-gray-400 gap-6">
-        <button className="cursor-pointer hover:opacity-70">
+      <div className="flex items-center text-zinc-600 text-xl gap-6 ">
+        <div className="hidden lg:flex items-center text-zinc-600 text-xl gap-6 font-medium ">
+          <NavButton router="/">Home</NavButton>
+          <NavButton router="/workouts">Treinos</NavButton>
+          <NavButton router="/history">Histórico</NavButton>
+        </div>
+        <NavButton router="/me">
+          <CircleUserRound className="w-8 h-8" />
+        </NavButton>
+
+        {/* <button className="cursor-pointer hover:opacity-70">
           <History className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" />
         </button>
         <button
@@ -51,10 +57,10 @@ function Header() {
           onClick={handleOpenModalLogout}
         >
           <LogOut className="w-5 h-5 md:w-6 md:h-6 lg:w-8 lg:h-8" />
-        </button>
+        </button> */}
       </div>
-      {loading && <Spinner />}
-      {openModalLogout && (
+      {/* {loading && <Spinner />} */}
+      {/* {openModalLogout && (
         <ModalConfirmation
           handleNo={handleCloseModalLogout}
           handleClose={handleCloseModalLogout}
@@ -63,7 +69,7 @@ function Header() {
           description="Você precisará fazer login novamente para acessar o MyGym."
           yesText="Sair"
         />
-      )}
+      )} */}
     </header>
   );
 }

@@ -1,18 +1,15 @@
-import Header from "../components/layout/Header";
+import LayoutPage from "../components/layout/LayoutPage";
 import TrainingToday from "../components/TrainingToday";
 import WellcomeTitle from "../components/WellcomeTitle";
 import WorkoutsWeek from "../components/WorkoutsWeek";
 
 function HomePage() {
   return (
-    <div className="flex flex-col items-center min-h-screen">
-      <div className="flex w-full flex-col items-center min-h-screen p-4 gap-6 max-w-250">
-        <Header />
-        <WellcomeTitle />
-        <TrainingToday />
-        <WorkoutsWeek />
-      </div>
-    </div>
+    <LayoutPage>
+      <WellcomeTitle />
+      <TrainingToday />
+      <WorkoutsWeek />
+    </LayoutPage>
   );
 }
 
