@@ -1,6 +1,7 @@
 import Header from "../components/layout/Header";
 import TrainingToday from "../components/TrainingToday";
 import WellcomeTitle from "../components/WellcomeTitle";
+import WorkoutsWeek from "../components/WorkoutsWeek";
 
 function HomePage() {
   return (
@@ -9,6 +10,7 @@ function HomePage() {
         <Header />
         <WellcomeTitle />
         <TrainingToday />
+        <WorkoutsWeek />
       </div>
     </div>
   );
