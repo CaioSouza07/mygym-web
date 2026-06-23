@@ -26,7 +26,10 @@ function BottomNavigation() {
           <span className="text-xs">Histórico</span>
         </NavButton>
 
-        <NavButton router="/me" className="flex flex-col items-center gap-1">
+        <NavButton
+          router="/profile"
+          className="flex flex-col items-center gap-1"
+        >
           <User size={22} />
           <span className="text-xs">Perfil</span>
         </NavButton>

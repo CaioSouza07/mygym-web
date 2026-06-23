@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { api } from "../../services/api";
 import { tokenStorage } from "../../services/tokenStorage";
+import { userService } from "../../services/userService";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -13,7 +14,7 @@ export function AuthProvider({ children }) {
         // const refresh = await api.post("/auth/refresh");
         // tokenStorage.setToken(refresh.accessToken);
 
-        const user = await api.get("/users/me");
+        const user = await userService.getMe();
 
         setUser(user);
       } catch {
@@ -26,6 +27,19 @@ export function AuthProvider({ children }) {
 
     loadSession();
   }, []);
+
+  async function loadSession() {
+    try {
+      const user = await userService.getMe();
+
+      setUser(user);
+    } catch {
+      tokenStorage.clearToken();
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const login = useCallback(async (email, password) => {
     setLoading(true);
@@ -80,6 +94,7 @@ export function AuthProvider({ children }) {
         login,
         register,
         logout,
+        reload: loadSession,
         isAuthenticated: !!user,
       }}
     >

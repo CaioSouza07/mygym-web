@@ -7,7 +7,7 @@ import Label from "../components/ui/Label";
 import TitleForm from "../components/TitleForm";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import ErrorCard from "../components/ErrorCard";
+import AlertCard from "../components/ui/AlertCard";
 import Spinner from "../components/ui/Spinner";
 import ErrorFieldInfo from "../components/ErrorFieldInfo";
 import { z } from "zod";
@@ -30,10 +30,6 @@ function LoginPage() {
       navigate("/");
     } catch (err) {
       if (err instanceof Error) {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth",
-        });
         setError({
           message: err.message,
           details: err.details,
@@ -112,9 +108,12 @@ function LoginPage() {
         </form>
       </div>
       {error.message && (
-        <ErrorCard onClick={() => setError({ message: null, details: null })}>
+        <AlertCard
+          show={true}
+          onClose={() => setError({ message: null, details: null })}
+        >
           {error.message}
-        </ErrorCard>
+        </AlertCard>
       )}
       {loading && <Spinner />}
     </div>

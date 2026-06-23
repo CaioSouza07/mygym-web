@@ -4,6 +4,8 @@ import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import HomePage from "../pages/HomePage";
 import ProtectedRoute from "../components/ProtectedRoute";
+import ProfilePage from "../pages/ProfilePage";
+import ProfileMyAccountPage from "../pages/ProfileMyAccountPage";
 
 function AppRoutes() {
   return (
@@ -19,7 +21,23 @@ function AppRoutes() {
               <HomePage />
             </ProtectedRoute>
           }
-        ></Route>
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile/my-account"
+          element={
+            <ProtectedRoute>
+              <ProfileMyAccountPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -45,7 +45,7 @@ function Header() {
           <NavButton router="/workouts">Treinos</NavButton>
           <NavButton router="/history">Histórico</NavButton>
         </div>
-        <NavButton router="/me">
+        <NavButton router="/profile">
           <CircleUserRound className="w-8 h-8" />
         </NavButton>
 
