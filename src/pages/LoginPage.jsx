@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import InputPassword from "../components/InputPassword";
+import { Helmet } from "react-helmet-async";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -53,6 +54,9 @@ function LoginPage() {
 
   return (
     <div className="flex flex-col items-center min-h-screen">
+      <Helmet>
+        <title>Login | MyGym</title>
+      </Helmet>
       <div className="flex w-full flex-col items-center min-h-screen p-6 gap-2 max-w-120">
         <img
           src={logo}

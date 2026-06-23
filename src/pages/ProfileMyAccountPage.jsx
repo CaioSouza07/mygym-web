@@ -16,6 +16,7 @@ import AlertCard from "../components/ui/AlertCard";
 import Spinner from "../components/ui/Spinner";
 import ModalConfirmation from "../components/ModalConfirmation";
 import InputPassword from "../components/InputPassword";
+import { Helmet } from "react-helmet-async";
 
 function ProfileMyAccountPage() {
   const { user, reload } = useAuth();
@@ -136,6 +137,9 @@ function ProfileMyAccountPage() {
 
   return (
     <LayoutPage>
+      <Helmet>
+        <title>My Account | MyGym</title>
+      </Helmet>
       <div className="flex flex-col w-full gap-4">
         <button
           onClick={() => navigate("/profile")}

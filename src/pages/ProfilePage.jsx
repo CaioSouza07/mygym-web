@@ -12,6 +12,7 @@ import Button from "../components/ui/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import ModalConfirmation from "../components/ModalConfirmation";
+import { Helmet } from "react-helmet-async";
 
 function ProfilePage() {
   const { user, logout } = useAuth();
@@ -28,6 +29,9 @@ function ProfilePage() {
   };
   return (
     <LayoutPage>
+      <Helmet>
+        <title>Profile | MyGym</title>
+      </Helmet>
       <Card className="gap-6">
         <div className="flex w-full items-center gap-6">
           <div className="rounded-full p-2 bg-zinc-700">
@@ -47,7 +51,9 @@ function ProfilePage() {
             <ChevronRight />
           </div>
         </Card>
-        <Card className="bg-zinc-700/30 flex-row justify-between! text-white/80 hover:opacity-80 cursor-pointer">
+        <Card className="bg-zinc-700/30 flex-row justify-between! text-white/80 hover:opacity-80 cursor-pointer"
+          onClick={() => navigate("/profile/preferences")}
+        >
           <div className="flex gap-2 items-center text-xl">
             <Settings2 />
             <h2>Minhas Preferências</h2>
