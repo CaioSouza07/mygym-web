@@ -8,7 +8,7 @@ function HomePage() {
   return (
     <LayoutPage>
       <Helmet>
-        <title>Home | MyGym</title>
+        <title>Home - MyGym</title>
       </Helmet>
       <WellcomeTitle />
       <TrainingToday />

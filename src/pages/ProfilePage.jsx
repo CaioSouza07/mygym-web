@@ -30,7 +30,7 @@ function ProfilePage() {
   return (
     <LayoutPage>
       <Helmet>
-        <title>Profile | MyGym</title>
+        <title>Profile - MyGym</title>
       </Helmet>
       <Card className="gap-6">
         <div className="flex w-full items-center gap-6">
@@ -51,7 +51,8 @@ function ProfilePage() {
             <ChevronRight />
           </div>
         </Card>
-        <Card className="bg-zinc-700/30 flex-row justify-between! text-white/80 hover:opacity-80 cursor-pointer"
+        <Card
+          className="bg-zinc-700/30 flex-row justify-between! text-white/80 hover:opacity-80 cursor-pointer"
           onClick={() => navigate("/profile/preferences")}
         >
           <div className="flex gap-2 items-center text-xl">

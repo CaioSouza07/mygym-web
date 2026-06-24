@@ -51,7 +51,7 @@ function ProfilePreferencesPage() {
   return (
     <LayoutPage>
       <Helmet>
-        <title>Preferences | MyGym</title>
+        <title>Preferences - MyGym</title>
       </Helmet>
       <div className="flex flex-col w-full gap-4">
         <button

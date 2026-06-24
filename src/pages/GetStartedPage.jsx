@@ -8,7 +8,7 @@ function GetStartedPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-6">
       <Helmet>
-        <title>Get Started | MyGym</title>
+        <title>Get Started - MyGym</title>
       </Helmet>
       <img
         src={logo}

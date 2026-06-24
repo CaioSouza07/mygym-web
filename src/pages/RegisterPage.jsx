@@ -62,7 +62,7 @@ function RegisterPage() {
   return (
     <div className="flex flex-col items-center min-h-screen">
       <Helmet>
-        <title>Register | MyGym</title>
+        <title>Register - MyGym</title>
       </Helmet>
       <div className="flex w-full flex-col items-center min-h-screen p-6 gap-2 max-w-120">
         <img
