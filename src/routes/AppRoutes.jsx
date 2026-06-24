@@ -7,6 +7,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import ProfilePage from "../pages/ProfilePage";
 import ProfileMyAccountPage from "../pages/ProfileMyAccountPage";
 import ProfilePreferencesPage from "../pages/ProfilePreferencesPage";
+import WorkoutsPage from "../pages/WorkoutsPage";
 
 function AppRoutes() {
   return (
@@ -44,6 +45,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <ProfilePreferencesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/workouts"
+          element={
+            <ProtectedRoute>
+              <WorkoutsPage />
             </ProtectedRoute>
           }
         />

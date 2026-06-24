@@ -35,7 +35,6 @@ async function refreshAccessToken() {
 }
 
 async function request(endpoint, options = {}) {
-  console.log("CHAMADA PARA A API");
   const token = tokenStorage.getToken();
   const config = {
     credentials: "include",
