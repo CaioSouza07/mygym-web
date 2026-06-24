@@ -8,6 +8,7 @@ import ProfilePage from "../pages/ProfilePage";
 import ProfileMyAccountPage from "../pages/ProfileMyAccountPage";
 import ProfilePreferencesPage from "../pages/ProfilePreferencesPage";
 import WorkoutsPage from "../pages/WorkoutsPage";
+import WorkoutsCreatePage from "../pages/WorkoutsCreatePage";
 
 function AppRoutes() {
   return (
@@ -51,9 +52,17 @@ function AppRoutes() {
         <Route
           path="/workouts"
           element={
-            <ProtectedRoute>
-              <WorkoutsPage />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <WorkoutsPage />
+            // </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/workouts/create"
+          element={
+            // <ProtectedRoute>
+            <WorkoutsCreatePage />
+            // </ProtectedRoute>
           }
         />
       </Routes>

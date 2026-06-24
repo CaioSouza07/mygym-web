@@ -3,8 +3,10 @@ import dumbbell from "../assets/dumbbell.png";
 import Button from "./ui/Button";
 import Card from "./ui/Card";
 import { useTraining } from "../hooks/useTraining";
+import { useNavigate } from "react-router";
 
 function TrainingToday() {
+  const navigate = useNavigate();
   const { trainings } = useTraining();
   const days = [
     "SUNDAY",
@@ -37,7 +39,10 @@ function TrainingToday() {
           </div>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <Button className="gap-2 max-w-2/3">
+          <Button
+            className="gap-2 max-w-2/3"
+            onClick={() => navigate("/workouts/create")}
+          >
             <CirclePlus className="w-8 h-8" />
             <p className="hidden md:inline">Criar treino</p>
           </Button>

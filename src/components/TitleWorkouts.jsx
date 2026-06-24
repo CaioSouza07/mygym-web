@@ -1,7 +1,9 @@
 import { Plus } from "lucide-react";
 import Button from "./ui/Button";
+import { useNavigate } from "react-router";
 
 function TitleWorkouts() {
+  const navigate = useNavigate();
   return (
     <div className="flex w-full items-center justify-between gap-4">
       <div className="flex flex-col">
@@ -10,7 +12,10 @@ function TitleWorkouts() {
           Acompanhe seus treinos e evolua todos os dias
         </span>
       </div>
-      <Button className=" p-3! max-w-fit   gap-2">
+      <Button
+        className=" p-3! max-w-fit   gap-2"
+        onClick={() => navigate("/workouts/create")}
+      >
         <Plus className="w-6 h-6" />
         <p className="hidden lg:inline">Criar treino</p>
       </Button>
