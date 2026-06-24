@@ -50,7 +50,7 @@ function ProfileMyAccountPage() {
       setSuccess(true);
     } catch (err) {
       if (err instanceof Error) {
-        console.log(err);
+        console.err(err);
 
         const message =
           err?.response?.data?.message || err?.message || "Erro inesperado";
@@ -76,7 +76,7 @@ function ProfileMyAccountPage() {
       setSuccess(true);
     } catch (err) {
       if (err instanceof Error) {
-        console.log(err);
+        console.err(err);
 
         const message =
           err?.response?.data?.message || err?.message || "Erro inesperado";

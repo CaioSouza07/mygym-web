@@ -11,12 +11,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function loadSession() {
       try {
-        // const refresh = await api.post("/auth/refresh");
-        // tokenStorage.setToken(refresh.accessToken);
-
         const user = await userService.getMe();
-
-        setUser(user);
+        const preferences = await userService.getPreferences();
+        setUser({ ...user, preferences });
       } catch {
         tokenStorage.clearToken();
         setUser(null);
@@ -31,8 +28,8 @@ export function AuthProvider({ children }) {
   async function loadSession() {
     try {
       const user = await userService.getMe();
-
-      setUser(user);
+      const preferences = await userService.getPreferences();
+      setUser({ ...user, preferences });
     } catch {
       tokenStorage.clearToken();
       setUser(null);

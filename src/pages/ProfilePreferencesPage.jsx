@@ -25,7 +25,9 @@ function ProfilePreferencesPage() {
   const { user, reload } = useAuth();
   const navigate = useNavigate();
 
-  const [restTime, setRestTime] = useState(user?.preferences?.defaultRestTime || 60);
+  const [restTime, setRestTime] = useState(
+    user?.preferences?.defaultRestTime || 60,
+  );
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -38,7 +40,9 @@ function ProfilePreferencesPage() {
       reload();
       setSuccess(true);
     } catch (err) {
-      setError(err?.response?.data?.message || err?.message || "Erro inesperado");
+      setError(
+        err?.response?.data?.message || err?.message || "Erro inesperado",
+      );
     } finally {
       setLoading(false);
     }
@@ -58,10 +62,14 @@ function ProfilePreferencesPage() {
           <span>Voltar</span>
         </button>
 
-        <h1 className="text-white text-2xl font-semibold">Minhas Preferências</h1>
+        <h1 className="text-white text-2xl font-semibold">
+          Minhas Preferências
+        </h1>
 
         <Card className="gap-4 items-start">
-          <h2 className="text-white text-lg font-semibold">Tempo de Descanso</h2>
+          <h2 className="text-white text-lg font-semibold">
+            Tempo de Descanso
+          </h2>
           <p className="text-white/60 text-sm">
             Defina o tempo padrão de descanso entre as séries.
           </p>
@@ -86,7 +94,10 @@ function ProfilePreferencesPage() {
             </div>
           </div>
 
-          <Button onClick={handleSave} className="max-w-fit px-4 gap-2 self-end">
+          <Button
+            onClick={handleSave}
+            className="max-w-fit px-4 gap-2 self-end"
+          >
             <Save size={18} />
             Salvar
           </Button>
