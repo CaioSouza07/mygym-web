@@ -1,6 +1,6 @@
 import Label from "./Label";
 
-function MenuDropdown({ id, label, options, className = "" }) {
+function MenuDropdown({ id, label, options, className = "", value, onChange }) {
   return (
     <div className="flex flex-col gap-1">
       <Label htmlFor={id} className={className}>
@@ -9,6 +9,8 @@ function MenuDropdown({ id, label, options, className = "" }) {
       <select
         name={id}
         id={id}
+        value={value}
+        onChange={onChange}
         className="bg-black cursor-pointer  text-white border-2 rounded-lg w-full p-2 placeholder:opacity-100 border-[#333333] placeholder:text-[#858385] focus:outline-1 focus:outline-white/40"
       >
         {options.map((option) => (

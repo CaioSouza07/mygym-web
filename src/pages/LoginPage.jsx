@@ -19,22 +19,16 @@ import { Helmet } from "react-helmet-async";
 function LoginPage() {
   const navigate = useNavigate();
   const { loading, login } = useAuth();
-  const [error, setError] = useState({
-    message: null,
-    details: null,
-  });
+  const [error, setError] = useState(null);
 
   const onSubmit = async (data) => {
-    setError({ message: null, details: null });
+    setError(null);
     try {
       await login(data.email, data.password);
       navigate("/");
     } catch (err) {
       if (err instanceof Error) {
-        setError({
-          message: err.message,
-          details: err.details,
-        });
+        setError(err.message);
       }
     }
   };
@@ -111,12 +105,9 @@ function LoginPage() {
           </Card>
         </form>
       </div>
-      {error.message && (
-        <AlertCard
-          show={true}
-          onClose={() => setError({ message: null, details: null })}
-        >
-          {error.message}
+      {error && (
+        <AlertCard show={true} onClose={() => setError(null)}>
+          {error}
         </AlertCard>
       )}
       {loading && <Spinner />}

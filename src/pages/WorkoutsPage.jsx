@@ -5,7 +5,7 @@ import { useTraining } from "../hooks/useTraining";
 import TrainingCard from "../components/TrainingCard";
 
 function WorkoutsPage() {
-  const { trainings, reaload } = useTraining();
+  const { trainings } = useTraining();
   return (
     <LayoutPage>
       <Helmet>

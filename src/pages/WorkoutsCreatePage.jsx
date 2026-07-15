@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router";
+import { useTraining } from "../hooks/useTraining";
+import { createTraining } from "../services/trainingsService";
+import { zodResolver } from "@hookform/resolvers/zod";
 import LayoutPage from "../components/layout/LayoutPage";
 import { ArrowLeft, Plus } from "lucide-react";
 import Label from "../components/ui/Label";
@@ -6,8 +9,20 @@ import Input from "../components/ui/Input";
 import MenuDropdown from "../components/ui/MenuDropdown";
 import Button from "../components/ui/Button";
 import ExerciseCardCreate from "../components/ExerciseCardCreate";
+import { useState } from "react";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import ErrorFieldInfo from "../components/ErrorFieldInfo";
+import AlertCard from "../components/ui/AlertCard";
 
 function WorkoutsCreatePage() {
+  const [exercises, setExercises] = useState([]);
+  const [newExerciseName, setNewExerciseName] = useState("");
+  const [weekDay, setWeekDay] = useState("sunday");
+  const [error, setError] = useState(null);
+
+  const { reload } = useTraining();
+
   const navigate = useNavigate();
   const weekDays = [
     { value: "sunday", name: "Domingo" },
@@ -18,6 +33,101 @@ function WorkoutsCreatePage() {
     { value: "friday", name: "Sexta" },
     { value: "saturday", name: "Sábado" },
   ];
+
+  const handleAddExercise = () => {
+    if (!newExerciseName.trim()) return;
+
+    const newExercise = {
+      name: newExerciseName,
+      series: [
+        { order: 1, repetitions: 12 },
+        { order: 2, repetitions: 12 },
+        { order: 3, repetitions: 12 },
+      ],
+    };
+
+    const updated = [...exercises, newExercise];
+    setExercises(updated);
+    setValue("exercises", updated, { shouldValidate: true });
+    setNewExerciseName("");
+  };
+
+  const handleRemoveExercise = (indexRemove) => {
+    const updated = exercises.filter((_, index) => index !== indexRemove);
+    setExercises(updated);
+    setValue("exercises", updated, { shouldValidate: true });
+  };
+
+  const handleAddSerieInExercise = (indexAdd) => {
+    setExercises((prev) =>
+      prev.map((exercise, index) => {
+        if (index !== indexAdd) return exercise;
+
+        return {
+          ...exercise,
+          series: [
+            ...exercise.series,
+            {
+              order: exercise.series.length + 1,
+              repetitions: 12,
+            },
+          ],
+        };
+      }),
+    );
+  };
+
+  const handleChangeSerieRepetitions = (
+    exerciseIndex,
+    serieIndex,
+    repetitions,
+  ) => {
+    setExercises((prev) =>
+      prev.map((exercise, index) => {
+        if (index !== exerciseIndex) return exercise;
+
+        return {
+          ...exercise,
+          series: exercise.series.map((serie, i) => {
+            if (i !== serieIndex) return serie;
+
+            return {
+              ...serie,
+              repetitions: Number(repetitions),
+            };
+          }),
+        };
+      }),
+    );
+  };
+
+  const createTrainingSchema = z.object({
+    name: z.string().min(1, "Nome do treino é obrigatório"),
+    exercises: z.array(z.any()).min(1, "Adicione pelo menos 1 exercício"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(createTrainingSchema),
+    defaultValues: { exercises: [] },
+  });
+
+  const handleCreateTraining = async (data) => {
+    setError(null);
+    try {
+      await createTraining({ ...data, weekDay: weekDay.toUpperCase() });
+      reload();
+      navigate("/workouts");
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+    }
+  };
 
   return (
     <LayoutPage>
@@ -30,68 +140,87 @@ function WorkoutsCreatePage() {
       </button>
 
       <div className="flex w-full flex-col lg:flex-row gap-8">
-        <div className="flex flex-col gap-4 w-full lg:w-80 lg:sticky lg:top-4 lg:self-start">
+        <form
+          className="flex flex-col gap-4 w-full lg:w-80 lg:sticky lg:top-4 lg:self-start"
+          autoComplete="nope"
+          onSubmit={handleSubmit(handleCreateTraining)}
+        >
           <h1 className="text-white text-2xl font-semibold">Novo Treino</h1>
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
               <Label htmlFor="name" className="text-white/70">
                 Nome do Treino
               </Label>
-              <Input placeholder="Ex: Costas e Bíceps" id="name" />
+              <Input
+                placeholder="Ex: Treino - Costas e Bíceps"
+                id="name"
+                {...register("name")}
+                error={!!errors.name}
+              />
+              <ErrorFieldInfo error={errors.name} />
             </div>
             <MenuDropdown
               id="weekDay"
               label="Dia da Semana"
               options={weekDays}
               className="text-white/70"
+              value={weekDay}
+              onChange={(e) => setWeekDay(e.target.value)}
             />
           </div>
-          <Button className="mt-2 hidden lg:flex">Salvar Treino</Button>
-        </div>
+          <Button type="submit" className="mt-2 hidden lg:flex">
+            Salvar Treino
+          </Button>
+        </form>
 
-        <div className="flex flex-col gap-4 flex-1">
-          <Label className="text-white/70 text-lg!">Exercícios</Label>
+        <div className="flex flex-col gap-4 flex-1 lg:self-start">
+          <Label className="text-white/70 text-lg! ">Exercícios</Label>
 
-          <ExerciseCardCreate
-            exercise={{
-              name: "Cadeira Extensora",
-              series: [
-                { order: 1, repetitions: 12 },
-                { order: 2, repetitions: 12 },
-                { order: 3, repetitions: 12 },
-              ],
-            }}
-          />
+          {exercises.map((exercise, index) => {
+            return (
+              <ExerciseCardCreate
+                key={index}
+                exercise={exercise}
+                onRemove={() => handleRemoveExercise(index)}
+                onAddSerie={() => handleAddSerieInExercise(index)}
+                onChangeRepetitions={(serieIndex, repetitions) =>
+                  handleChangeSerieRepetitions(index, serieIndex, repetitions)
+                }
+              />
+            );
+          })}
 
-          <ExerciseCardCreate
-            exercise={{
-              name: "Leg Press 45°",
-              series: [
-                { order: 1, repetitions: 10 },
-                { order: 2, repetitions: 10 },
-                { order: 3, repetitions: 8 },
-                { order: 4, repetitions: 8 },
-              ],
-            }}
-          />
-
-          <div className="flex gap-3 items-center">
-            <Input placeholder="Nome do exercício" />
-            <Button
-              className="whitespace-nowrap max-w-fit gap-2"
-              variant="secondary"
-            >
-              <Plus className="w-4 h-4" />
-              <span className="hidden lg:inline">Adicionar</span>
-            </Button>
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-3 items-center">
+              <Input
+                placeholder="Nome do exercício"
+                value={newExerciseName}
+                onChange={(e) => setNewExerciseName(e.target.value)}
+                error={!!errors.exercises}
+              />
+              <Button
+                className="whitespace-nowrap max-w-fit gap-2"
+                variant="secondary"
+                onClick={handleAddExercise}
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden lg:inline">Adicionar</span>
+              </Button>
+            </div>
+            <ErrorFieldInfo error={errors.exercises} />
           </div>
         </div>
       </div>
 
       {/* Botão fixo no rodapé para mobile */}
-      <div className="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/95 to-transparent lg:hidden">
+      <div className="fixed bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black via-black/95 to-transparent lg:hidden">
         <Button>Salvar Treino</Button>
       </div>
+      {error && (
+        <AlertCard show={true} onClose={() => setError(null)}>
+          {error}
+        </AlertCard>
+      )}
     </LayoutPage>
   );
 }
