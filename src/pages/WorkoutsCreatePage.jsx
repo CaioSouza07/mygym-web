@@ -14,6 +14,7 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import ErrorFieldInfo from "../components/ErrorFieldInfo";
 import AlertCard from "../components/ui/AlertCard";
+import { Helmet } from "react-helmet-async";
 
 function WorkoutsCreatePage() {
   const [exercises, setExercises] = useState([]);
@@ -121,7 +122,11 @@ function WorkoutsCreatePage() {
     try {
       await createTraining({ ...data, weekDay: weekDay.toUpperCase() });
       reload();
-      navigate("/workouts");
+      navigate("/workouts", {
+        state: {
+          success: "Treino criado com sucesso!",
+        },
+      });
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
@@ -131,6 +136,9 @@ function WorkoutsCreatePage() {
 
   return (
     <LayoutPage>
+      <Helmet>
+        <title>Criar Treino - MyGym</title>
+      </Helmet>
       <button
         onClick={() => navigate("/workouts")}
         className="flex items-center gap-2 text-white/70 hover:text-white cursor-pointer self-start"
@@ -139,15 +147,16 @@ function WorkoutsCreatePage() {
         <span>Voltar</span>
       </button>
 
+      <h1 className="text-white text-2xl font-semibold w-full">Novo Treino</h1>
+
       <div className="flex w-full flex-col lg:flex-row gap-8">
         <form
           className="flex flex-col gap-4 w-full lg:w-80 lg:sticky lg:top-4 lg:self-start"
           autoComplete="nope"
           onSubmit={handleSubmit(handleCreateTraining)}
         >
-          <h1 className="text-white text-2xl font-semibold">Novo Treino</h1>
           <div className="flex flex-col gap-3">
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-4">
               <Label htmlFor="name" className="text-white/70">
                 Nome do Treino
               </Label>
@@ -168,7 +177,7 @@ function WorkoutsCreatePage() {
               onChange={(e) => setWeekDay(e.target.value)}
             />
           </div>
-          <Button type="submit" className="mt-2 hidden lg:flex">
+          <Button type="submit" className="mt-2 lg:flex">
             Salvar Treino
           </Button>
         </form>

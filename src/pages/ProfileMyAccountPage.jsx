@@ -138,7 +138,7 @@ function ProfileMyAccountPage() {
   return (
     <LayoutPage>
       <Helmet>
-        <title>My Account - MyGym</title>
+        <title>Minha Conta - MyGym</title>
       </Helmet>
       <div className="flex flex-col w-full gap-4">
         <button

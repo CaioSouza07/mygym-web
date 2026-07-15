@@ -30,7 +30,7 @@ function ProfilePage() {
   return (
     <LayoutPage>
       <Helmet>
-        <title>Profile - MyGym</title>
+        <title>Perfil - MyGym</title>
       </Helmet>
       <Card className="gap-6">
         <div className="flex w-full items-center gap-6">
