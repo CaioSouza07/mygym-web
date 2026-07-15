@@ -41,7 +41,7 @@ function TrainingToday() {
         <div className="flex-1 flex items-center justify-center">
           <Button
             className="gap-2 max-w-2/3"
-            onClick={() => navigate("/workouts/create")}
+            onClick={() => navigate("/workouts/new")}
           >
             <CirclePlus className="w-8 h-8" />
             <p className="hidden md:inline">Criar treino</p>

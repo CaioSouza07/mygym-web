@@ -14,7 +14,7 @@ function TitleWorkouts() {
       </div>
       <Button
         className=" p-3! max-w-fit   gap-2"
-        onClick={() => navigate("/workouts/create")}
+        onClick={() => navigate("/workouts/new")}
       >
         <Plus className="w-6 h-6" />
         <p className="hidden lg:inline">Criar treino</p>

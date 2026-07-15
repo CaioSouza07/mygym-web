@@ -1,7 +1,7 @@
 import { ChevronRight, Dumbbell } from "lucide-react";
 import Card from "./ui/Card";
 
-function TrainingCard({ training }) {
+function TrainingCard({ training, onClick }) {
   //   const formatter = new Intl.DateTimeFormat("pt-BR", {
   //     day: "2-digit",
   //     month: "short",
@@ -16,7 +16,10 @@ function TrainingCard({ training }) {
     SATURDAY: "SAB",
   };
   return (
-    <Card className="flex-row! justify-between! items-center! py-3! px-4! gap-4 hover:opacity-90 cursor-pointer">
+    <Card
+      onClick={onClick}
+      className="flex-row! justify-between! items-center! py-3! px-4! gap-4 hover:opacity-90 cursor-pointer"
+    >
       <div className="flex items-center gap-3">
         <div className="bg-[#FFCC00]/10 border border-[#FFCC00]/30 rounded-xl p-2">
           <Dumbbell className="w-6 h-6 text-[#FFCC00]" />

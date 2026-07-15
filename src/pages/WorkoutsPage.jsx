@@ -3,13 +3,14 @@ import LayoutPage from "../components/layout/LayoutPage";
 import TitleWorkouts from "../components/TitleWorkouts";
 import { useTraining } from "../hooks/useTraining";
 import TrainingCard from "../components/TrainingCard";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import AlertCard from "../components/ui/AlertCard";
 
 function WorkoutsPage() {
   const { trainings } = useTraining();
 
+  const navigate = useNavigate();
   const location = useLocation();
   const [success, setSuccess] = useState(location.state?.success || null);
 
@@ -27,7 +28,13 @@ function WorkoutsPage() {
       <TitleWorkouts />
       {trainings &&
         trainings.map((training) => {
-          return <TrainingCard key={training.id} training={training} />;
+          return (
+            <TrainingCard
+              key={training.id}
+              training={training}
+              onClick={() => navigate(`/workouts/${training.id}/edit`)}
+            />
+          );
         })}
       <AlertCard
         show={!!success}

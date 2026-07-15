@@ -9,6 +9,7 @@ import ProfileMyAccountPage from "../pages/ProfileMyAccountPage";
 import ProfilePreferencesPage from "../pages/ProfilePreferencesPage";
 import WorkoutsPage from "../pages/WorkoutsPage";
 import WorkoutsCreatePage from "../pages/WorkoutsCreatePage";
+import EditTrainingPage from "../pages/EditTrainingPage";
 
 function AppRoutes() {
   return (
@@ -52,17 +53,25 @@ function AppRoutes() {
         <Route
           path="/workouts"
           element={
-            // <ProtectedRoute>
-            <WorkoutsPage />
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <WorkoutsPage />
+            </ProtectedRoute>
           }
         />
         <Route
-          path="/workouts/create"
+          path="/workouts/new"
           element={
-            // <ProtectedRoute>
-            <WorkoutsCreatePage />
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <WorkoutsCreatePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/workouts/:id/edit"
+          element={
+            <ProtectedRoute>
+              <EditTrainingPage />
+            </ProtectedRoute>
           }
         />
       </Routes>
