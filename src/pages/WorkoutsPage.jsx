@@ -3,14 +3,13 @@ import LayoutPage from "../components/layout/LayoutPage";
 import TitleWorkouts from "../components/TitleWorkouts";
 import { useTraining } from "../hooks/useTraining";
 import TrainingCard from "../components/TrainingCard";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import AlertCard from "../components/ui/AlertCard";
 
 function WorkoutsPage() {
   const { trainings } = useTraining();
 
-  const navigate = useNavigate();
   const location = useLocation();
   const [success, setSuccess] = useState(location.state?.success || null);
 
@@ -32,7 +31,7 @@ function WorkoutsPage() {
             <TrainingCard
               key={training.id}
               training={training}
-              onClick={() => navigate(`/workouts/${training.id}/edit`)}
+              onDeleteSuccess={() => setSuccess("Treino deletado com sucesso")}
             />
           );
         })}

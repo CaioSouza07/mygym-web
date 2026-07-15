@@ -19,3 +19,8 @@ export async function updateTraining(id, data) {
   const response = await api.put(`/training/${id}`, data);
   return response;
 }
+
+export async function deleteTraining(id) {
+  const response = await api.delete(`/training/${id}`);
+  return response;
+}
