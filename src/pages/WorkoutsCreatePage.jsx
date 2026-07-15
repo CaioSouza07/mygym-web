@@ -15,12 +15,18 @@ import { useForm } from "react-hook-form";
 import ErrorFieldInfo from "../components/ErrorFieldInfo";
 import AlertCard from "../components/ui/AlertCard";
 import { Helmet } from "react-helmet-async";
+import ModalConfirmation from "../components/ModalConfirmation";
+import Spinner from "../components/ui/Spinner";
 
 function WorkoutsCreatePage() {
   const [exercises, setExercises] = useState([]);
   const [newExerciseName, setNewExerciseName] = useState("");
   const [weekDay, setWeekDay] = useState("sunday");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [dataModal, setDataModal] = useState(null);
 
   const { reload } = useTraining();
 
@@ -118,7 +124,10 @@ function WorkoutsCreatePage() {
   });
 
   const handleCreateTraining = async (data) => {
+    setLoading(true);
     setError(null);
+    setOpenModal(false);
+
     try {
       await createTraining({ ...data, weekDay: weekDay.toUpperCase() });
       reload();
@@ -131,6 +140,8 @@ function WorkoutsCreatePage() {
       if (err instanceof Error) {
         setError(err.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -153,7 +164,10 @@ function WorkoutsCreatePage() {
         <form
           className="flex flex-col gap-4 w-full lg:w-80 lg:sticky lg:top-4 lg:self-start"
           autoComplete="nope"
-          onSubmit={handleSubmit(handleCreateTraining)}
+          onSubmit={handleSubmit((data) => {
+            setDataModal(data);
+            setOpenModal(true);
+          })}
         >
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-4">
@@ -230,6 +244,17 @@ function WorkoutsCreatePage() {
           {error}
         </AlertCard>
       )}
+      {openModal && (
+        <ModalConfirmation
+          title="Cadastro de Treino"
+          description="Você deseja cadastrar este novo treino?"
+          handleYes={() => handleCreateTraining(dataModal)}
+          handleNo={() => setOpenModal(false)}
+          handleClose={() => setOpenModal(false)}
+          yesText="Cadastrar"
+        />
+      )}
+      {loading && <Spinner />}
     </LayoutPage>
   );
 }
