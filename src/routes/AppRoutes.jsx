@@ -10,6 +10,7 @@ import ProfilePreferencesPage from "../pages/ProfilePreferencesPage";
 import WorkoutsPage from "../pages/WorkoutsPage";
 import WorkoutsCreatePage from "../pages/WorkoutsCreatePage";
 import EditTrainingPage from "../pages/EditTrainingPage";
+import ExecuteTrainingPage from "../pages/ExecuteTrainingPage";
 
 function AppRoutes() {
   return (
@@ -71,6 +72,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <EditTrainingPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/workouts/:id/execute"
+          element={
+            <ProtectedRoute>
+              <ExecuteTrainingPage />
             </ProtectedRoute>
           }
         />

@@ -80,7 +80,10 @@ function TrainingToday() {
           <span className="text-zinc-300">exercícios</span>
         </div>
 
-        <Button className="max-w-fit font-semibold">
+        <Button
+          onClick={() => navigate(`/workouts/${todayTraining.id}/execute`)}
+          className="max-w-fit font-semibold"
+        >
           Iniciar treino
           <ChevronRight />
         </Button>

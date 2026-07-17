@@ -1,8 +1,11 @@
 import { ArrowRight, BedDouble } from "lucide-react";
 import Card from "./ui/Card";
 import Button from "./ui/Button";
+import { useNavigate } from "react-router";
 
 function TrainingCardDay({ training }) {
+  const navigate = useNavigate();
+
   const days = ["DOM", "SEG", "TER", "QUA", "QUI", "SEX", "SAB"];
   const formatter = new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
@@ -31,7 +34,11 @@ function TrainingCardDay({ training }) {
       </div>
 
       {trainingDay ? (
-        <Button variant="secondary" className="w-fit! bg-transparent">
+        <Button
+          onClick={() => navigate(`/workouts/${training.training.id}/execute`)}
+          variant="secondary"
+          className="w-fit! bg-transparent"
+        >
           <ArrowRight />
         </Button>
       ) : (

@@ -66,8 +66,8 @@ function WorkoutsCreatePage() {
   };
 
   const handleAddSerieInExercise = (indexAdd) => {
-    setExercises((prev) =>
-      prev.map((exercise, index) => {
+    setExercises((prev) => {
+      const updated = prev.map((exercise, index) => {
         if (index !== indexAdd) return exercise;
 
         return {
@@ -80,8 +80,14 @@ function WorkoutsCreatePage() {
             },
           ],
         };
-      }),
-    );
+      });
+
+      setValue("exercises", updated, {
+        shouldValidate: true,
+      });
+
+      return updated;
+    });
   };
 
   const handleChangeSerieRepetitions = (
@@ -89,8 +95,8 @@ function WorkoutsCreatePage() {
     serieIndex,
     repetitions,
   ) => {
-    setExercises((prev) =>
-      prev.map((exercise, index) => {
+    setExercises((prev) => {
+      const updated = prev.map((exercise, index) => {
         if (index !== exerciseIndex) return exercise;
 
         return {
@@ -104,8 +110,14 @@ function WorkoutsCreatePage() {
             };
           }),
         };
-      }),
-    );
+      });
+
+      setValue("exercises", updated, {
+        shouldValidate: true,
+      });
+
+      return updated;
+    });
   };
 
   const createTrainingSchema = z.object({
@@ -165,6 +177,7 @@ function WorkoutsCreatePage() {
           className="flex flex-col gap-4 w-full lg:w-80 lg:sticky lg:top-4 lg:self-start"
           autoComplete="nope"
           onSubmit={handleSubmit((data) => {
+            console.log(data);
             setDataModal(data);
             setOpenModal(true);
           })}

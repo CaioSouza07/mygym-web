@@ -67,8 +67,8 @@ function EditTrainingPage() {
   };
 
   const handleAddSerieInExercise = (indexAdd) => {
-    setExercises((prev) =>
-      prev.map((exercise, index) => {
+    setExercises((prev) => {
+      const updated = prev.map((exercise, index) => {
         if (index !== indexAdd) return exercise;
 
         return {
@@ -81,8 +81,14 @@ function EditTrainingPage() {
             },
           ],
         };
-      }),
-    );
+      });
+
+      setValue("exercises", updated, {
+        shouldValidate: true,
+      });
+
+      return updated;
+    });
   };
 
   const handleChangeSerieRepetitions = (
@@ -90,8 +96,8 @@ function EditTrainingPage() {
     serieIndex,
     repetitions,
   ) => {
-    setExercises((prev) =>
-      prev.map((exercise, index) => {
+    setExercises((prev) => {
+      const updated = prev.map((exercise, index) => {
         if (index !== exerciseIndex) return exercise;
 
         return {
@@ -105,8 +111,14 @@ function EditTrainingPage() {
             };
           }),
         };
-      }),
-    );
+      });
+
+      setValue("exercises", updated, {
+        shouldValidate: true,
+      });
+
+      return updated;
+    });
   };
 
   const editTrainingSchema = z.object({
