@@ -21,7 +21,13 @@ function SerieCard({ serie, checked, onClick, onChangeKg, valueKg }) {
         </div>
       </div>
 
-      <div className="flex items-center gap-2 w-[180px]">
+      <div className="flex items-center gap-2 ">
+        <Input
+          placeholder="Reps"
+          className="text-center"
+          onChange={onChangeKg}
+          value={valueKg}
+        />
         <Input
           placeholder="kg"
           className="text-center"
