@@ -1,37 +1,41 @@
-import { useState } from "react";
 import SerieCard from "./SerieCard";
 import Card from "./ui/Card";
 
-function ExerciseCard({ exercise }) {
-  const [series, setSeries] = useState(
-    exercise?.series?.map((serie) => ({
-      ...serie,
-      completed: false,
-    })),
-  );
-
-  const handleSerieCompleted = (id) => {
-    console.log("setando");
-    setSeries((prev) =>
-      prev.map((serie) =>
-        serie.id === id ? { ...serie, completed: !serie.completed } : serie,
-      ),
-    );
-  };
+function ExerciseCard({
+  exercise,
+  seriesState,
+  onToggleCompleted,
+  onChangeKg,
+  onChangeReps,
+}) {
+  const completedCount = Object.values(seriesState).filter(
+    (s) => s.completed,
+  ).length;
 
   return (
-    <Card key={exercise.id} className="flex flex-col gap-4">
-      <h2 className="text-white w-full font-semibold text-xl truncate">
-        {exercise.name}
-      </h2>
+    <Card key={exercise.id} className="gap-3">
+      <div className="flex w-full items-center justify-between">
+        <h2 className="text-white font-semibold text-lg truncate max-w-[70%]">
+          {exercise.name}
+        </h2>
+        <span className="text-xs text-zinc-500 font-medium">
+          {completedCount}/{exercise.series.length}
+        </span>
+      </div>
+
       <div className="flex flex-col w-full gap-2">
-        {series.map((serie) => {
+        {exercise.series.map((serie) => {
+          const state = seriesState[serie.id] || {};
           return (
             <SerieCard
-              checked={serie.completed}
               key={serie.id}
               serie={serie}
-              onClick={() => handleSerieCompleted(serie.id)}
+              checked={state.completed}
+              valueKg={state.kg}
+              valueReps={state.reps}
+              onChangeKg={(e) => onChangeKg(serie.id, e.target.value)}
+              onChangeReps={(e) => onChangeReps(serie.id, e.target.value)}
+              onClick={() => onToggleCompleted(serie.id)}
             />
           );
         })}
