@@ -11,6 +11,7 @@ import WorkoutsPage from "../pages/WorkoutsPage";
 import WorkoutsCreatePage from "../pages/WorkoutsCreatePage";
 import EditTrainingPage from "../pages/EditTrainingPage";
 import ExecuteTrainingPage from "../pages/ExecuteTrainingPage";
+import HistoryPage from "../pages/HistoryPage";
 
 function AppRoutes() {
   return (
@@ -80,6 +81,14 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <ExecuteTrainingPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/history"
+          element={
+            <ProtectedRoute>
+              <HistoryPage />
             </ProtectedRoute>
           }
         />

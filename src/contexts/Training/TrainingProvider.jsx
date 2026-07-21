@@ -10,6 +10,8 @@ export function TrainingProvider({ children }) {
 
   const { user } = useAuth();
 
+  const exercises = trainings.flatMap((training) => training.exercises);
+
   async function reload() {
     try {
       setLoading(true);
@@ -48,6 +50,7 @@ export function TrainingProvider({ children }) {
     <TrainingContext.Provider
       value={{
         trainings,
+        exercises,
         loading,
         error,
         reload,
