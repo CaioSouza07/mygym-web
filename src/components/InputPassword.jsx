@@ -32,6 +32,7 @@ const InputPassword = forwardRef(
         />
         <button
           type="button"
+          tabIndex={-1}
           onClick={() => setVisible(!isVisible)}
           className="text-[#858385] cursor-pointer"
         >
