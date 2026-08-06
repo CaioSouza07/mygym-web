@@ -84,19 +84,52 @@ function HistoryPage() {
           onChange={(e) => setExerciseView(e.target.value)}
         />
       </div>
-      <LoadProgressionChart />
+      {loading && <Spinner />}
 
-      {!isEmpty && (
-        <div className="flex flex-col w-full gap-2">
-          <h2 className="text-xl text-white font-medium">Registros</h2>
-          {historyExercise?.map((history) => (
-            <HistoryCard
-              key={history?.id}
-              history={history}
-              exerciseName={selectedExercise?.name}
-            />
-          ))}
-        </div>
+      {!loading && !isEmpty && (
+        <>
+          <LoadProgressionChart data={historyExercise} />
+
+          <div className="flex flex-col w-full gap-2">
+            <h2 className="text-xl text-white font-medium">Registros</h2>
+            {historyExercise?.map((history) => (
+              <HistoryCard
+                key={history?.id}
+                history={history}
+                exerciseName={selectedExercise?.name}
+              />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between pt-4 border-t border-white/10 gap-4">
+              <span className="font-poppins text-xs text-white/40">
+                {totalElements} registros no total
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={page === 0}
+                  className="p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-[#FFCC00]/50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all"
+                  aria-label="Página anterior"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+                <span className="font-poppins text-sm text-white/70 px-2">
+                  {page + 1} / {totalPages}
+                </span>
+                <button
+                  onClick={handleNextPage}
+                  disabled={page >= totalPages - 1}
+                  className="p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-[#FFCC00]/50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all"
+                  aria-label="Próxima página"
+                >
+                  <ChevronRight size={18} />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {isEmpty && (
@@ -115,36 +148,6 @@ function HistoryPage() {
         </div>
       )}
 
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-4 border-t border-white/10 gap-4">
-          <span className="font-poppins text-xs text-white/40">
-            {totalElements} registros no total
-          </span>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrevPage}
-              disabled={page === 0}
-              className="p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-[#FFCC00]/50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all"
-              aria-label="Página anterior"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <span className="font-poppins text-sm text-white/70 px-2">
-              {page + 1} / {totalPages}
-            </span>
-            <button
-              onClick={handleNextPage}
-              disabled={page >= totalPages - 1}
-              className="p-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-[#FFCC00]/50 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer transition-all"
-              aria-label="Próxima página"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {loading && <Spinner />}
       <AlertCard show={!!error} onClose={() => setError(null)}>
         {error}
       </AlertCard>

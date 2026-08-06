@@ -9,86 +9,55 @@ import {
   YAxis,
 } from "recharts";
 import Card from "./ui/Card";
-import { useMemo, useState } from "react";
-import MenuDropdown from "./ui/MenuDropdown";
+import { useMemo } from "react";
 
-function LoadProgressionChart() {
-  const [period, setPeriod] = useState("30");
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const data = [
-    {
-      date: "2026-02-01",
-      label: "01/02",
-      weight: 10,
-    },
-    {
-      date: "2026-07-08",
-      label: "08/07",
-      weight: 45,
-    },
-    {
-      date: "2026-07-15",
-      label: "15/07",
-      weight: 47.5,
-    },
-    {
-      date: "2026-07-22",
-      label: "22/07",
-      weight: 20,
-    },
-    {
-      date: "2026-07-29",
-      label: "29/07",
-      weight: 52.5,
-    },
-    {
-      date: "2026-08-05",
-      label: "05/08",
-      weight: 20,
-    },
-  ];
+function LoadProgressionChart({ data }) {
+  const chartData = useMemo(() => {
+    return [...data]
+      .reverse()
+      .map((item) => {
+        const date = new Date(item.createdAt);
 
-  const filteredData = useMemo(() => {
-    if (period === "all") return data;
-
-    const limit = new Date();
-    limit.setDate(limit.getDate() - Number(period));
-
-    return data.filter((item) => new Date(item.date) >= limit);
-  }, [data, period]);
-
-  const periodOptions = [
-    { id: "30", name: "Últimos 30 dias" },
-    { id: "90", name: "Últimos 90 dias" },
-    { id: "180", name: "Últimos 6 meses" },
-    { id: "365", name: "Último ano" },
-    { id: "all", name: "Tudo" },
-  ];
+        return {
+          ...item,
+          label: date.toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+          }),
+          load: item.weight,
+        };
+      });
+  }, [data]);
 
   return (
     <Card className="w-full p-2! lg:px-6! gap-4">
-      <div className="flex w-full justify-between items-center flex-wrap gap-4">
-        <h2 className="text-lg font-semibold text-white">
-          Progressão de Carga
-        </h2>
-
-        <div className="w-56">
-          <MenuDropdown
-            id="period"
-            options={periodOptions}
-            value={period}
-            onChange={(e) => setPeriod(e.target.value)}
-          />
-        </div>
-      </div>
+      <h2 className="text-lg font-semibold text-white">
+        Progressão de Carga
+      </h2>
 
       <ResponsiveContainer width="100%" height={300}>
-        <LineChart data={filteredData}>
+        <LineChart data={chartData}>
           <CartesianGrid stroke="#3a3a3a" strokeDasharray="5 5" />
-          <XAxis dataKey="label" />
+          <XAxis
+            dataKey="createdAt"
+            tickFormatter={(value) =>
+              new Date(value).toLocaleDateString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+              })
+            }
+          />
           <YAxis width="auto" />
           <Legend align="right" />
           <Tooltip
+            labelFormatter={(value) =>
+              new Date(value).toLocaleString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            }
             contentStyle={{
               backgroundColor: "#1F1F1F",
               border: "1px solid #3A3A3A",
@@ -112,7 +81,6 @@ function LoadProgressionChart() {
             }}
           />
           <Line
-            // type="monotone"
             dataKey="weight"
             stroke="#FFCC00"
             strokeWidth={3}

@@ -1,4 +1,5 @@
 import Card from "./ui/Card";
+import { Dumbbell } from "lucide-react";
 
 function HistoryCard({ history, exerciseName }) {
   const date = new Date(history.createdAt.replace(" ", "T"));
@@ -15,13 +16,22 @@ function HistoryCard({ history, exerciseName }) {
     hour: "2-digit",
     minute: "2-digit",
   });
+
   return (
-    <Card className="flex-row justify-between! p-2!">
-      <div className="flex flex-col gap-2 min-w-0">
-        <span className="text-white text-base ">{formattedDate}</span>
-        <p className="text-[#858385] font-medium truncate">{exerciseName}</p>
+    <Card className="flex-row justify-between! items-center! p-3!">
+      <div className="flex flex-col gap-1 min-w-0">
+        <span className="text-white text-base font-medium">
+          {formattedDate}
+        </span>
+        <p className="text-[#858385] text-sm truncate">{exerciseName}</p>
       </div>
-      <span className="text-[#858385] font-medium">{formattedHour}</span>
+      <div className="flex flex-col items-end gap-1 shrink-0">
+        <div className="flex items-center gap-1.5 text-[#FFCC00]">
+          <Dumbbell size={14} />
+          <span className="font-semibold text-sm">{history.weight} kg</span>
+        </div>
+        <span className="text-[#858385] text-xs">{formattedHour}</span>
+      </div>
     </Card>
   );
 }

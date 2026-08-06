@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
-import { api } from "../../services/api";
+import { api, refreshAccessToken } from "../../services/api";
 import { tokenStorage } from "../../services/tokenStorage";
 import { userService } from "../../services/userService";
 
@@ -11,6 +11,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     async function loadSession() {
       try {
+        if (!tokenStorage.getToken()) {
+          await refreshAccessToken();
+        }
+
         const user = await userService.getMe();
         const preferences = await userService.getPreferences();
         setUser({ ...user, preferences });

@@ -10,28 +10,43 @@ class ApiError extends Error {
   }
 }
 
+let refreshPromise = null;
+
 async function refreshAccessToken() {
-  const res = await fetch(`${API_BASE}/auth/refresh`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!res.ok) {
-    const errorData = await res.json().catch(() => null);
-
-    tokenStorage.clearToken();
-
-    throw new Error(errorData?.message || "Falha ao renovar sessão");
+  if (refreshPromise) {
+    return refreshPromise;
   }
 
-  const data = await res.json();
+  refreshPromise = (async () => {
+    const res = await fetch(`${API_BASE}/auth/refresh`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  tokenStorage.setToken(data.accessToken);
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => null);
 
-  return data.accessToken;
+      tokenStorage.clearToken();
+
+      throw new Error(errorData?.message || "Falha ao renovar sessão");
+    }
+
+    const data = await res.json();
+
+    tokenStorage.setToken(data.accessToken);
+
+    return data.accessToken;
+  })();
+
+  try {
+    const token = await refreshPromise;
+    return token;
+  } finally {
+    refreshPromise = null;
+  }
 }
 
 async function request(endpoint, options = {}) {
@@ -95,6 +110,8 @@ async function request(endpoint, options = {}) {
 
   return res.status === 204 ? null : res.json();
 }
+
+export { refreshAccessToken };
 
 export const api = {
   get: (endpoint) => request(endpoint),
