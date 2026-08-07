@@ -181,7 +181,7 @@ function ExecuteTrainingPage() {
   const handleGoHome = useCallback(() => {
     navigate("/");
   }, [navigate]);
-
+  console.log(user);
   return (
     <LayoutPage>
       <Helmet>
@@ -211,7 +211,7 @@ function ExecuteTrainingPage() {
 
       {timer && (
         <TimerTraining
-          duration={user?.preferences.defaultRestTime}
+          duration={user?.preferences?.defaultRestTime}
           onFinish={() => setTimer(false)}
         />
       )}
