@@ -50,8 +50,8 @@ export function AuthProvider({ children }) {
       const token = res.token;
       tokenStorage.setToken(token);
 
-      const userApi = res.user;
-      setUser(userApi);
+      const preferences = await userService.getPreferences();
+      setUser({ ...res.user, preferences });
 
       return res;
     } finally {
@@ -59,23 +59,22 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const register = async (name, email, password) => {
-    setLoading(true);
-    try {
-      const res = await api.post("/auth/register", { name, email, password });
+const register = async (name, email, password) => {
+  setLoading(true);
+  try {
+    const res = await api.post("/auth/register", { name, email, password });
 
-      const token = res.token;
-      tokenStorage.setToken(token);
+    const token = res.token;
+    tokenStorage.setToken(token);
 
-      const userApi = res.user;
-      setUser(userApi);
+    const preferences = await userService.getPreferences();
+    setUser({ ...res.user, preferences });
 
-      return res;
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    return res;
+  } finally {
+    setLoading(false);
+  }
+};
   const logout = useCallback(async () => {
     try {
       await api.post("/auth/logout");
