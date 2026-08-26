@@ -24,6 +24,7 @@ function ExecuteTrainingPage() {
   const [timer, setTimer] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
+  const [timestampTimer, setTimestampTimer] = useState(null);
 
   const navigate = useNavigate();
 
@@ -67,6 +68,7 @@ function ExecuteTrainingPage() {
 
       if (newCompleted) {
         setTimer(true);
+        setTimestampTimer(Date.now())
       }
 
       return {
@@ -213,6 +215,7 @@ function ExecuteTrainingPage() {
         <TimerTraining
           duration={user?.preferences?.defaultRestTime}
           onFinish={() => setTimer(false)}
+          timestamp={timestampTimer}
         />
       )}
 
