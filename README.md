@@ -33,7 +33,7 @@ registrar a execução dos treinos, acompanhar sua progressão de carga e potenc
 ```bash
 # Clonar o repositório
 git clone https://github.com/CaioSouza07/mygym-web.git
-cd navalrivals-web
+cd mygym-web
 
 # Instalar dependências
 npm install
