@@ -30,10 +30,8 @@ function ExecuteTrainingPage() {
 
   const navigate = useNavigate();
 
-  const { seriesState, setSeriesState, clearSession } = useWorkoutSession(
-    id,
-    training,
-  );
+  const { seriesState, setSeriesState, clearSession, initialized } =
+    useWorkoutSession(id, training);
 
   useEffect(() => {
     async function fetchData() {
@@ -56,9 +54,13 @@ function ExecuteTrainingPage() {
 
   const handleToggleCompleted = (exerciseId, serieId) => {
     setSeriesState((prev) => {
-      const currentCompleted = prev[exerciseId][serieId].completed;
+      const currentSerie = prev[exerciseId]?.[serieId];
 
-      const newCompleted = !currentCompleted;
+      if (!currentSerie) {
+        return prev;
+      }
+
+      const newCompleted = !currentSerie.completed;
 
       if (newCompleted) {
         setTimer(true);
@@ -70,7 +72,7 @@ function ExecuteTrainingPage() {
         [exerciseId]: {
           ...prev[exerciseId],
           [serieId]: {
-            ...prev[exerciseId][serieId],
+            ...currentSerie,
             completed: newCompleted,
           },
         },
@@ -79,29 +81,45 @@ function ExecuteTrainingPage() {
   };
 
   const handleChangeKg = (exerciseId, serieId, value) => {
-    setSeriesState((prev) => ({
-      ...prev,
-      [exerciseId]: {
-        ...prev[exerciseId],
-        [serieId]: {
-          ...prev[exerciseId][serieId],
-          kg: value,
+    setSeriesState((prev) => {
+      const currentSerie = prev[exerciseId]?.[serieId];
+
+      if (!currentSerie) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [exerciseId]: {
+          ...prev[exerciseId],
+          [serieId]: {
+            ...currentSerie,
+            kg: value,
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   const handleChangeReps = (exerciseId, serieId, value) => {
-    setSeriesState((prev) => ({
-      ...prev,
-      [exerciseId]: {
-        ...prev[exerciseId],
-        [serieId]: {
-          ...prev[exerciseId][serieId],
-          reps: value,
+    setSeriesState((prev) => {
+      const currentSerie = prev[exerciseId]?.[serieId];
+
+      if (!currentSerie) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [exerciseId]: {
+          ...prev[exerciseId],
+          [serieId]: {
+            ...currentSerie,
+            reps: value,
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   const handleExecuteTraining = async () => {
@@ -213,22 +231,23 @@ function ExecuteTrainingPage() {
         />
       )}
 
-      {training?.exercises.map((exercise) => (
-        <ExerciseCard
-          key={exercise.id}
-          exercise={exercise}
-          seriesState={seriesState[exercise.id] || {}}
-          onToggleCompleted={(serieId) =>
-            handleToggleCompleted(exercise.id, serieId)
-          }
-          onChangeKg={(serieId, value) =>
-            handleChangeKg(exercise.id, serieId, value)
-          }
-          onChangeReps={(serieId, value) =>
-            handleChangeReps(exercise.id, serieId, value)
-          }
-        />
-      ))}
+      {initialized &&
+        training?.exercises.map((exercise) => (
+          <ExerciseCard
+            key={exercise.id}
+            exercise={exercise}
+            seriesState={seriesState[exercise.id] || {}}
+            onToggleCompleted={(serieId) =>
+              handleToggleCompleted(exercise.id, serieId)
+            }
+            onChangeKg={(serieId, value) =>
+              handleChangeKg(exercise.id, serieId, value)
+            }
+            onChangeReps={(serieId, value) =>
+              handleChangeReps(exercise.id, serieId, value)
+            }
+          />
+        ))}
 
       <Button className="max-w-1/2 gap-2" onClick={() => setOpenModal(true)}>
         <Trophy size={18} />

@@ -62,6 +62,7 @@ function useWorkoutSession(trainingId, training) {
     seriesState,
     setSeriesState,
     clearSession,
+    initialized,
   };
 }
 
