@@ -13,6 +13,7 @@ import AlertCard from "../components/ui/AlertCard";
 import { saveHistory } from "../services/historyService";
 import TimerTraining from "../components/TimerTraining";
 import { AuthContext } from "../contexts/Auth/AuthContext";
+import useWorkoutSession from "../hooks/useWorkoutSession";
 
 function ExecuteTrainingPage() {
   const { id } = useParams();
@@ -28,28 +29,19 @@ function ExecuteTrainingPage() {
 
   const navigate = useNavigate();
 
-  const [seriesState, setSeriesState] = useState({});
+  const { seriesState, setSeriesState, clearSession } = useWorkoutSession(
+    id,
+    training,
+  );
 
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
+
         const data = await getTrainingById(id);
+
         setTraining(data);
-
-        const initialState = {};
-        data.exercises.forEach((exercise) => {
-          initialState[exercise.id] = {};
-          exercise.series.forEach((serie) => {
-            initialState[exercise.id][serie.id] = {
-              completed: false,
-              kg: "",
-              reps: "",
-            };
-          });
-        });
-        setSeriesState(initialState);
-
         setError(null);
       } catch (err) {
         setError(err.message);
@@ -57,6 +49,7 @@ function ExecuteTrainingPage() {
         setLoading(false);
       }
     }
+
     fetchData();
   }, [id]);
 
@@ -68,7 +61,7 @@ function ExecuteTrainingPage() {
 
       if (newCompleted) {
         setTimer(true);
-        setTimestampTimer(Date.now())
+        setTimestampTimer(Date.now());
       }
 
       return {
@@ -164,6 +157,7 @@ function ExecuteTrainingPage() {
       }
 
       await saveHistory({ exercises: payload.exercises });
+      clearSession();
       setShowCongrats(true);
     } catch (err) {
       setError(err.message);
@@ -183,7 +177,6 @@ function ExecuteTrainingPage() {
   const handleGoHome = useCallback(() => {
     navigate("/");
   }, [navigate]);
-  console.log(user);
   return (
     <LayoutPage>
       <Helmet>
