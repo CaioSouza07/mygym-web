@@ -24,6 +24,7 @@ function ExecuteTrainingPage() {
   const [error, setError] = useState(null);
   const [timer, setTimer] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalLeft, setOpenModalLeft] = useState(false);
   const [showCongrats, setShowCongrats] = useState(false);
   const [timestampTimer, setTimestampTimer] = useState(null);
 
@@ -183,11 +184,11 @@ function ExecuteTrainingPage() {
         <title>Executar Treino - MyGym</title>
       </Helmet>
       <button
-        onClick={() => navigate("/")}
-        className="flex items-center gap-2 text-white/70 hover:text-white cursor-pointer self-start"
+        onClick={() => setOpenModalLeft(true)}
+        className="flex items-center gap-2 text-red-800 hover:opacity-80 cursor-pointer self-start"
       >
         <ArrowLeft size={20} />
-        <span>Voltar</span>
+        <span>Sair do treino</span>
       </button>
 
       <div className="flex flex-col w-full">
@@ -248,6 +249,21 @@ function ExecuteTrainingPage() {
           handleNo={() => setOpenModal(false)}
           title="Finalizar Treino"
           description="Deseja finalizar o treino de hoje? "
+          yesText="Sim"
+        />
+      )}
+
+      {openModalLeft && (
+        <ModalConfirmation
+          handleYes={() => {
+            setOpenModalLeft(false);
+            clearSession();
+            navigate("/");
+          }}
+          handleClose={() => setOpenModalLeft(false)}
+          handleNo={() => setOpenModalLeft(false)}
+          title="Sair do Treino?"
+          description="Deseja sair do treino? (perderá a sessão atual) "
           yesText="Sim"
         />
       )}
